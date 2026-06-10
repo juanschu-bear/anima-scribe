@@ -1,0 +1,25 @@
+{
+  "name": "anima-scribe",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Anima Scribe – chairside Behandlungsdokumentation, PVS-unabhaengig (Standalone)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.4.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18.3",
+    "@types/react-dom": "^18.3",
+    "typescript": "^5.4.0"
+  }
+}
