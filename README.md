@@ -76,4 +76,4 @@ Supabase-Dashboard anlegen (Authentication → Add user, E-Mail bestätigt) und 
 
 ---
 
-*Teil der Anima-Produktreihe.* - ONIOKO - EXIDEUS LLX
+*Teil der Anima-Produktreihe.* - ONIOKO - EXIDEUS LLC
