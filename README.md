@@ -1,63 +1,79 @@
-# Anima Scribe (Standalone)
+# Anima Scribe
 
-Chairside-Behandlungsdokumentation in drei Klicks: Termintyp und Patient wählen,
-vorbereitete Vorlage bestätigen, in die Patientenakte des Praxisverwaltungssystems
-(PVS) schreiben. Append-only, versioniert, mit Behandler-Kürzel, Demo-Modus und
-rollenbasierter Team-Verwaltung.
+**Die Doku schreibt sich, während du behandelst. Nicht abends. Nicht am Wochenende.**
 
-Diese Standalone-Variante ist **unabhängig von Anima Cura** und **PVS-neutral**:
-Das Zielsystem (ivoris oder ein anderes) steckt hinter einem austauschbaren Adapter.
+Anima Scribe verwandelt einen Termin in drei Klicks in einen fertigen,
+revisionssicheren Karteieintrag, direkt in der Akte des Praxisverwaltungssystems.
+Kein Abtippen, kein Nachtragen, keine halben Sätze um 19 Uhr. Die Person wählt
+Termintyp und Patient, bestätigt eine bereits passende Vorlage, fertig.
 
-## Was drin ist
+Gebaut, weil gute Dokumentation überall am selben scheitert: Die Arbeit passiert
+am Stuhl, die Doku passiert später und ungern. Scribe holt sie zurück an den Ort,
+an dem sie entsteht.
 
-- **Scribe-Cockpit** (`/scribe`): Patientensuche, altersgefilterte Vorlagen,
-  klickbares Zahnschema (FDI, bukkal/palatinal/lingual), Variablen, Positionen,
-  Bestätigen, Versionen, Verwerfen, Demo-Modus, Spickzettel, Hell/Dunkel.
-- **PVS-Push** (`/api/doku/.../ivoris-push`): schreibt über den PVS-Adapter.
-- **Team & Zugänge** (`/scribe/team`, nur Admin): Konten, Rollen, Kürzel,
-  Passwörter, granulare Modulrechte. Eigenes Passwort ändern für alle.
-- **Auth**: eine Benutzer-DB (Supabase), Rollen admin / verwaltung / lesezugriff.
+---
 
-## PVS-Adapter (der Kern der Wiederverwendbarkeit)
+## Was es kann
 
-Scribe schreibt nie direkt an ein bestimmtes System, sondern an die neutrale
-Schnittstelle in `src/lib/pvs/index.ts`. Mitgeliefert ist der **ivoris-Adapter**.
+- **Vorschlagen statt Suchen.** Aus Termintyp und Patientenalter erscheint die
+  richtige Vorlage von selbst. Niemand muss wissen, welches Kürzel wann passt.
+- **Strukturiert statt Freitext.** Klickbares Schema, Auswahl-Chips, Variablen.
+  Zwei Behandler, dieselbe saubere Struktur, jedes Mal.
+- **Revisionssicher von Haus aus.** Append-only auf Datenbank-Ebene, Versionen
+  statt Überschreiben, Behandler-Kürzel am Eintrag. §630f-konform gedacht.
+- **Chairside.** Für das Tablet am Behandlungsplatz, nicht für den Schreibtisch.
+- **Demo-Modus.** Gefahrloses Üben, es wird nichts gespeichert. Ideal für
+  Schulung und skeptische Prüfblicke.
+- **Team & Rechte.** Konten, Rollen, Kürzel, Passwörter, granulare Modulrechte,
+  alles über die Oberfläche, ohne Kommandozeile.
 
-Eine Praxis mit anderem PVS bekommt einen neuen Adapter, der zwei Funktionen
-erfüllt (`addKarteiEintrag`, optional `fetchKarteiEintraege`), und setzt
-`PVS_ADAPTER` in der Umgebung. Der restliche Code bleibt unverändert.
+## PVS-unabhängig: ein Adapter, jedes Zielsystem
+
+Scribe schreibt nie fest an ein einzelnes System, sondern an eine neutrale
+Schnittstelle (`src/lib/pvs/index.ts`). Mitgeliefert: der **ivoris-Adapter**.
+Eine Praxis mit anderer Software bekommt einen eigenen Adapter (zwei Funktionen),
+setzt `PVS_ADAPTER` um, und der gesamte übrige Code bleibt unangetastet.
 
 ```
 src/lib/pvs/
-  index.ts          <- Adapter-Auswahl + neutrale Schnittstelle (PvsAdapter)
-  ivoris-adapter.ts <- Adapter 1: ivoris (computer konkret Relay)
-  (hier kommen weitere Adapter dazu)
+  index.ts          Adapter-Auswahl + neutrale Schnittstelle (PvsAdapter)
+  ivoris-adapter.ts Adapter 1: ivoris (computer konkret Relay)
+  ...               weitere Adapter kommen hier dazu
 ```
+
+> **Über KFO hinaus.** Der Kern von Scribe ist nicht kieferorthopädisch: Kontext
+> erkennen, Vorlage vorschlagen, strukturiert erfassen, revisionssicher ins
+> Fremdsystem schreiben. Das einzige fachspezifische Teil ist das Zahnschema,
+> ein austauschbares Eingabe-Widget. Tausche es gegen einen Körperbereich, eine
+> Mängelliste, eine Objektskizze, und dieselbe Engine dokumentiert Physiotherapie,
+> Dermatologie, Pflege, Gutachten oder Handwerk. Die Architektur lässt das offen.
 
 ## Einrichtung
 
-1. Neues, leeres GitHub-Repo anlegen, diesen Ordner hineinlegen, pushen.
+1. Neues, leeres Repo anlegen, diesen Ordner hineinlegen, pushen.
 2. Eigene Supabase-Instanz anlegen.
-3. Migrationen aus `supabase/migrations/` im Supabase-SQL-Editor in Reihenfolge
-   ausführen (000 zuerst, dann 019, 019b–019f, 020, 021).
-4. `.env.example` nach `.env.local` kopieren und ausfüllen (Supabase, Mail-Domain,
-   PVS_ADAPTER, ggf. ivoris-Zugänge der Praxis).
-5. `npm install` und `npm run build`.
-6. Erstes Admin-Konto anlegen (siehe unten).
-7. Auf Vercel deployen, Umgebungsvariablen dort hinterlegen, eigene Domain mappen.
+3. Migrationen aus `supabase/migrations/` in Reihenfolge im SQL-Editor ausführen
+   (000 zuerst, dann 019, 019b–019f, 020, 021).
+4. `.env.example` nach `.env.local` kopieren und ausfüllen.
+5. `npm install`, dann `npm run build`.
+6. Erstes Admin-Konto anlegen (siehe unten), danach läuft alles über die App.
+7. Auf Vercel deployen, Variablen dort hinterlegen, eigene Domain mappen.
 
-## Erstes Admin-Konto
+### Erstes Admin-Konto
 
-Es gibt bewusst keine Selbstregistrierung. Das erste Admin-Konto wird einmalig
-über das Supabase-Dashboard (Authentication → Add user, E-Mail bestätigt) plus
-einen Eintrag in `user_profiles` mit `role = 'admin'` angelegt. Danach laufen
-alle weiteren Konten über **Team & Zugänge** in der App.
+Bewusst keine Selbstregistrierung. Das erste Admin-Konto einmalig über das
+Supabase-Dashboard anlegen (Authentication → Add user, E-Mail bestätigt) und in
+`user_profiles` mit `role = 'admin'` eintragen. Alle weiteren Konten danach über
+**Team & Zugänge** in der App.
 
-## Grenzen / Hinweise
+## Bewusste Grenzen
 
-- Termine: Patient wird manuell gesucht. Eine Kalenderanbindung ist nicht Teil
-  dieser Variante.
-- Die verbundene Anima-Cura-Kopplung (Doku-Eintrag ↔ Zahlung) ist hier bewusst
-  NICHT enthalten; dieses Standalone steht für sich.
-- Vor Produktivbetrieb mit Patientendaten: AVV und TOMs der jeweiligen Praxis,
-  und ein eigener PVS-Adapter, falls nicht ivoris.
+- Termine: Patient wird manuell gesucht, keine Kalenderanbindung in dieser Variante.
+- Die Kopplung an Anima Cura (Doku-Eintrag ↔ Zahlung) ist hier nicht enthalten.
+  Dieses Standalone steht für sich.
+- Vor Produktivbetrieb mit personenbezogenen Daten: AVV und TOMs der Praxis, und
+  ein passender PVS-Adapter, falls nicht ivoris.
+
+---
+
+*Teil der Anima-Produktreihe.* - ONIOKO - EXIDEUS LLX
