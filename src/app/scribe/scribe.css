@@ -124,7 +124,7 @@
 .scribe .pille.rot{background:var(--rot-soft);color:var(--rot);box-shadow:0 0 18px -6px var(--rot);
   animation:puls 1.3s ease-in-out infinite}
 @keyframes puls{50%{opacity:.45}}
-@media(prefers-reduced-motion:reduce){.scribe .pille.rot{animation:none}}
+@media(prefers-reduced-motion:reduce){.scribe .pille.rot,.scribe .gruppenlabel.offen::before{animation:none}}
 .scribe .wachenotiz{margin-top:10px;font-size:12.5px;color:var(--gedeckt)}
 .scribe .wachenotiz b{color:var(--rot);font-weight:600}
 .scribe .leer{color:var(--gedeckt);font-size:13.5px;font-style:italic}
@@ -473,12 +473,6 @@
 .scribe .team-matrix-zelle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px}
 .scribe .team-matrix-zelle select{width:118px;padding:6px 10px;font-size:12.5px}
 
-/* ===== Standalone: Team-Seite ===== */
-.scribe .team-seite{max-width:920px;margin:24px auto;padding:0 18px}
-.scribe .team-zurueck{display:inline-block;margin-bottom:16px;font-family:var(--mono);font-size:13px;
-  color:var(--gedeckt);text-decoration:none}
-.scribe .team-zurueck:hover{color:var(--primaer)}
-
 /* ===== Tagesliste: Datum, Suche, Gruppen ===== */
 .scribe .listenkopf{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:30px 0 14px}
 .scribe .listensteuer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -593,3 +587,13 @@
   box-shadow:0 12px 30px -12px var(--primaer)}
 .scribe .pp-absenden:hover:not(:disabled){filter:brightness(1.06)}
 .scribe .pp-absenden:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+
+/* Praxis-Pass: eigene Termin-Art hinzufuegen */
+.scribe .pp-neu-knopf{width:100%;margin-top:6px;padding:12px;border:1.5px dashed var(--kante);border-radius:12px;
+  background:none;color:var(--gedeckt);font-family:var(--mono);font-size:13px;cursor:pointer;transition:border-color .15s,color .15s}
+.scribe .pp-neu-knopf:hover{border-color:var(--primaer);color:var(--primaer)}
+.scribe .pp-neu{margin-top:6px;padding:16px;border:1px solid var(--primaer);border-radius:12px;background:var(--flaeche)}
+.scribe .pp-neu-aktionen{display:flex;gap:10px;margin-top:10px}
+.scribe .pp-abbruch{font-family:var(--display);font-weight:600;font-size:14px;padding:9px 18px;border-radius:10px;
+  background:none;color:var(--gedeckt);border:1px solid var(--kante);cursor:pointer}
+.scribe .pp-abbruch:hover{border-color:var(--gedeckt)}
