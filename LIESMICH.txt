@@ -1,0 +1,37 @@
+ANIMA SCRIBE  APP-ICON-SET
+==========================
+
+Zwei Farben:
+  BLAU   = Hauptversion (das Blau aus dem Scribe-Cockpit)
+  GRUEN  = zweite Farbvariante (passend zu Cura und Pay)
+
+Alle Dateien sind PNG mit transparenten Ecken. Das Icon sitzt damit
+sauber auf jedem Hintergrund, hell wie dunkel. favicon.ico liegt im web-Ordner.
+
+Pro Farbe drei Ordner plus Master:
+
+  ios/
+    icon-1024  = App Store
+    icon-180, icon-120  = iPhone Homescreen
+    icon-167, icon-152, icon-76  = iPad
+    icon-87, icon-80, icon-60, icon-58, icon-40, icon-29, icon-20  = System, Spotlight, Einstellungen
+
+  android/
+    icon-512  = Play Store
+    icon-192, icon-144, icon-96, icon-72, icon-48  = xxxhdpi bis mdpi
+
+  web/
+    favicon.ico  = Browser-Tab (enthaelt 16, 32, 48)
+    icon-16, icon-32  = Favicon-Groessen
+    apple-touch-icon-180  = iOS Homescreen-Lesezeichen
+    icon-192, icon-512  = PWA / Web-App-Manifest
+
+  master/
+    anima-scribe-2048, anima-scribe-1024  = Originalgroesse zum Weiterverarbeiten
+
+HINWEIS fuer einen echten nativen App-Store-Upload:
+Apple verlangt das Store-Icon ohne Transparenz und vollflaechig (keine
+abgerundeten Ecken, das System rundet selbst). Diese Dateien sind als
+Branding- und Web-Assets gedacht und funktionieren ueberall dort sofort.
+Wenn du wirklich eine native iOS- oder Android-App einreichst, baue ich
+dir eine store-konforme Variante ohne Transparenz. Sag einfach Bescheid.
